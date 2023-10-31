@@ -1,13 +1,12 @@
 import "./App.css";
-import axios from "axios";
 import { useState } from "react";
+import axios from "axios";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 function App() {
   const [location, setLocation] = useState({});
   const [search, setSearch] = useState("");
-  const [number, setNumber] = useState(10);
 
   function handleChange(event) {
     setSearch(event.target.value);
@@ -15,43 +14,29 @@ function App() {
 
   async function getLocation(event) {
     event.preventDefault();
-
-    // the API url we are going to make a request to
     const API = `https://eu1.locationiq.com/v1/search?q=${search}&key=${API_KEY}&format=json`;
-
-    // make the GET request
     const res = await axios.get(API);
-
-    // set location to be our response
     setLocation(res.data[0]);
   }
 
-  function handleNumber(mod) {
-    setNumber(number + mod);
-  }
-
   return (
-    <>
-      <h1>City Locator</h1>
-      <form onSubmit={getLocation}>
-        <input onChange={handleChange} placeholder="Location" />
-        <button>Get Location</button>
-      </form>
-
-      {location.lat && (
-        <div>
-          <button onClick={() => handleNumber(-1)}>-</button>
-          <span>{number}</span>
-          <button onClick={() => handleNumber(1)}>+</button>
-
-          <img
-            src={`https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${location.lat},${location.lon}&zoom=${number}&format=png`}
-          />
-        </div>
-      )}
-
-      <h2>{location.display_name}</h2>
-    </>
+    <main>
+      <div className="search">
+        <h1>City Locator</h1>
+        <form onSubmit={getLocation}>
+          <input onChange={handleChange} placeholder="Location" />
+          <button className="explore-btn">Explore!</button>
+        </form>
+      </div>
+      <div className="display">
+        <p>Longitude: {location.lon}</p>
+        <p>Latitude: {location.lat}</p>
+        <h2>Location: {location.display_name}</h2>
+        <img
+          src={`https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${location.lat},${location.lon}>&zoom=13&format=png`}
+        />
+      </div>
+    </main>
   );
 }
 

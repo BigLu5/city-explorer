@@ -32,7 +32,7 @@ function App() {
 
   return (
     <>
-      <h1>APIs</h1>
+      <h1>City Locator</h1>
       <form onSubmit={getLocation}>
         <input onChange={handleChange} placeholder="Location" />
         <button>Get Location</button>
